@@ -24,7 +24,7 @@ AFlockAIPlayer::AFlockAIPlayer()
     
     // Create a camera boom...
     CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
-    CameraBoom->AttachTo(RootComponent);
+    CameraBoom->SetupAttachment(RootComponent);
     CameraBoom->TargetArmLength = ZoomedInDistance;
     CameraBoom->RelativeRotation = FRotator(-80.f, 0.f, 0.f);
     CameraBoom->bDoCollisionTest = false; // Don't want to pull camera in when it collides with level
@@ -33,7 +33,7 @@ AFlockAIPlayer::AFlockAIPlayer()
     
     // Create a camera...
     CameraComponent = CreateDefaultSubobject<UCameraComponent>(TEXT("TopDownCamera"));
-    CameraComponent->AttachTo(CameraBoom, USpringArmComponent::SocketName);
+    CameraComponent->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
     
     // Create the spawning preview mesh
     PreviewMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("PreviewMesh"));
@@ -101,23 +101,23 @@ void AFlockAIPlayer::Tick( float DeltaTime )
 }
 
 // Called to bind functionality to input
-void AFlockAIPlayer::SetupPlayerInputComponent(class UInputComponent* InputComponent)
+void AFlockAIPlayer::SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent)
 {
-	Super::SetupPlayerInputComponent(InputComponent);
+	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
-    check(InputComponent);
+    check(PlayerInputComponent);
     
     // set up key bindings
-    InputComponent->BindAxis("MoveForward");
-    InputComponent->BindAxis("MoveRight");
-    InputComponent->BindAction("ZoomIn", IE_Pressed, this, &AFlockAIPlayer::ZoomIn);
-    InputComponent->BindAction("ZoomOut", IE_Pressed, this, &AFlockAIPlayer::ZoomOut);
-    InputComponent->BindAction("Spawn", IE_Pressed, this, &AFlockAIPlayer::BeginSpawning);
-    InputComponent->BindAction("Spawn", IE_Released, this, &AFlockAIPlayer::DoSpawning);
-    InputComponent->BindAction("CancelSpawning", IE_Pressed, this, &AFlockAIPlayer::CancelSpawning);
-    InputComponent->BindAction("Gamemode1", IE_Pressed, this, &AFlockAIPlayer::ChangeGamemode<EFlockAIGamemode::EGM_SpawnNewAgents>);
-    InputComponent->BindAction("Gamemode2", IE_Pressed, this, &AFlockAIPlayer::ChangeGamemode<EFlockAIGamemode::EGM_SpawnPositiveStimuli>);
-    InputComponent->BindAction("Gamemode3", IE_Pressed, this, &AFlockAIPlayer::ChangeGamemode<EFlockAIGamemode::EGM_SpawnNegativeStimuli>);
+    PlayerInputComponent->BindAxis("MoveForward");
+    PlayerInputComponent->BindAxis("MoveRight");
+    PlayerInputComponent->BindAction("ZoomIn", IE_Pressed, this, &AFlockAIPlayer::ZoomIn);
+    PlayerInputComponent->BindAction("ZoomOut", IE_Pressed, this, &AFlockAIPlayer::ZoomOut);
+    PlayerInputComponent->BindAction("Spawn", IE_Pressed, this, &AFlockAIPlayer::BeginSpawning);
+    PlayerInputComponent->BindAction("Spawn", IE_Released, this, &AFlockAIPlayer::DoSpawning);
+    PlayerInputComponent->BindAction("CancelSpawning", IE_Pressed, this, &AFlockAIPlayer::CancelSpawning);
+    PlayerInputComponent->BindAction("Gamemode1", IE_Pressed, this, &AFlockAIPlayer::ChangeGamemode<EFlockAIGamemode::EGM_SpawnNewAgents>);
+    PlayerInputComponent->BindAction("Gamemode2", IE_Pressed, this, &AFlockAIPlayer::ChangeGamemode<EFlockAIGamemode::EGM_SpawnPositiveStimuli>);
+    PlayerInputComponent->BindAction("Gamemode3", IE_Pressed, this, &AFlockAIPlayer::ChangeGamemode<EFlockAIGamemode::EGM_SpawnNegativeStimuli>);
 }
 
 void AFlockAIPlayer::ZoomIn()

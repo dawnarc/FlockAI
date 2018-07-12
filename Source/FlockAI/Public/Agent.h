@@ -49,14 +49,23 @@ public:
     float VisionRadius;
     
     /* This event is called every tick, before applying the calculated move vector to move the Agent */
-    UFUNCTION(BlueprintImplementableEvent, Category = AI)
+    //UFUNCTION(BlueprintImplementableEvent, Category = AI)
     void CalculateNewMoveVector();
     
     // Begin Actor Interface
     virtual void Tick(float DeltaSeconds) override;
     virtual void BeginPlay() override;
     // End Actor Interface
-    
+
+protected:
+
+	//UFUNCTION(BlueprintImplementableEvent, Category = AI)
+	void ComputeStimuliComponent();
+
+private:
+
+	void ResetComponents();
+
 protected:
     /* The movement vector (in local) this agent should move this tick. */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = AI)
@@ -65,4 +74,22 @@ protected:
     /* The movement vector (in local) this agent had last tick. */
     UPROPERTY(EditAnywhere , BlueprintReadOnly, Category = AI)
     FVector CurrentMoveVector;
+
+	FVector AlignmentComponent;
+
+	FVector CohesionComponent;
+
+	FVector SeparationComponent;
+
+	FVector NegativeStimuliComponent;
+
+	FVector PositiveStimuliComponent;
+
+	float NegativeStimuliMaxFactor;
+
+	float PositiveStimuliMaxFactor;
+
+	TSet<AActor*> Neighbourhood;
+
+	float AgentPhysicalRadius;
 };
