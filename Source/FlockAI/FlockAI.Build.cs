@@ -4,7 +4,7 @@ using UnrealBuildTool;
 
 public class FlockAI : ModuleRules
 {
-	public FlockAI(TargetInfo Target)
+	public FlockAI(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore" });
 	}

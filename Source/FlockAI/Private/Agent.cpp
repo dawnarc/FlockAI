@@ -23,18 +23,20 @@ AAgent::AAgent()
 
     // Create vision sphere
     VisionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("VisionSphere"));
-    VisionSphere->AttachTo(RootComponent);
+    VisionSphere->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
     VisionSphere->SetSphereRadius(VisionRadius);
 }
 
 void AAgent::BeginPlay()
 {
     // Initialize move vector
+	Super::BeginPlay();
     NewMoveVector = GetActorRotation().Vector().GetSafeNormal();
 }
 
 void AAgent::Tick(float DeltaSeconds)
 {
+	Super::Tick(DeltaSeconds);
     CurrentMoveVector = NewMoveVector;
     
     CalculateNewMoveVector();
